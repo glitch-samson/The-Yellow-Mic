@@ -7,7 +7,7 @@ import { Newsletter } from "@/components/sections/Newsletter";
 import { Footer } from "@/components/sections/Footer";
 
 export const metadata: Metadata = {
-  title: "Blog - TYMP Podcasts",
+  title: "TYMP Podcasts",
   description:
     "Expert insights, industry trends, and in-depth guides on podcasting - from playback tips to building better listening habits.",
 };

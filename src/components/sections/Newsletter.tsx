@@ -17,7 +17,7 @@ function NewsletterForm() {
         id="newsletter-email"
         type="email"
         placeholder="Enter your email"
-        className="h-[59px] min-w-0 flex-1 rounded-full border border-[#EAB819] bg-transparent px-6 outline-none transition placeholder:text-[#4E5255] focus:border-[#D4A20D]"
+        className="h-[75px] min-h-[51px] w-full min-w-0 flex-1 rounded-full border border-[#EAB819] bg-transparent px-6 text-center outline-none transition placeholder:text-[#4E5255] focus:border-[#D4A20D] sm:h-[59px] sm:min-h-0"
         style={{
           fontFamily: BODY_FONT,
           fontWeight: 400,
