@@ -9,9 +9,10 @@ import { Logo } from "../ui/Logo";
 import { navItems, navCta } from "@/lib/content";
 
 export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [openPathname, setOpenPathname] = useState<string | null>(null);
   const [hasScrolled, setHasScrolled] = useState(false);
   const pathname = usePathname();
+  const isOpen = openPathname === pathname;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,14 +24,9 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile drawer on route change or Escape key
-  useEffect(() => {
-    setIsOpen(false);
-  }, [pathname]);
-
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsOpen(false);
+      if (e.key === "Escape") setOpenPathname(null);
     };
     if (isOpen) {
       window.addEventListener("keydown", handleKeyDown);
@@ -115,7 +111,7 @@ export function Navbar() {
 
           <button
             type="button"
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => setOpenPathname(isOpen ? null : pathname)}
             className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white transition hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-[#EAB819]"
             aria-expanded={isOpen}
             aria-label={isOpen ? "Close menu" : "Open menu"}
@@ -138,7 +134,7 @@ export function Navbar() {
               <Link
                 key={item.label}
                 href={item.href}
-                onClick={() => setIsOpen(false)}
+                onClick={() => setOpenPathname(null)}
                 className={`flex items-center justify-between rounded-xl px-4 py-3 text-base font-medium transition ${
                   active
                     ? "bg-[#EAB819]/15 text-[#EAB819] font-semibold"
@@ -154,7 +150,7 @@ export function Navbar() {
           <div className="pt-4 border-t border-white/10">
             <Link
               href={navCta.href}
-              onClick={() => setIsOpen(false)}
+              onClick={() => setOpenPathname(null)}
               className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#EAB819] text-center font-semibold text-white shadow-lg transition hover:bg-[#F5C738]"
             >
               <span>{navCta.label}</span>
