@@ -45,11 +45,16 @@ export function BlogArticleView({ slug }: BlogArticleViewProps) {
 
       <main>
         {/* ── Dark hero ─────────────────────────────────────────────── */}
-        <section className="relative overflow-hidden bg-[#150F0E] pb-14 pt-32 sm:pb-20 sm:pt-40 lg:pt-48">
-          <div
-            className="pointer-events-none absolute -top-40 left-1/2 size-[650px] -translate-x-1/2 rounded-full opacity-20 blur-[130px]"
-            style={{ background: "radial-gradient(circle, #EAB819 0%, rgba(234,184,25,0) 70%)" }}
-          />
+        <section className="relative bg-[#150F0E] pb-0 pt-32 sm:pt-40 lg:pt-48">
+          {/* Glow blob clipped in its own layer so it can't cause horizontal scroll,
+              without restricting the section's own overflow (which needs to stay
+              visible so the featured image below can spill into the body section). */}
+          <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+            <div
+              className="absolute -top-40 left-1/2 size-[650px] -translate-x-1/2 rounded-full opacity-20 blur-[130px]"
+              style={{ background: "radial-gradient(circle, #EAB819 0%, rgba(234,184,25,0) 70%)" }}
+            />
+          </div>
 
           <div className="relative z-10 mx-auto w-full max-w-[900px] px-5 sm:px-8">
             <div
@@ -82,20 +87,36 @@ export function BlogArticleView({ slug }: BlogArticleViewProps) {
               {post.excerpt}
             </p>
 
-            <div className="relative mt-10 aspect-[16/7] overflow-hidden rounded-2xl sm:mt-12 sm:rounded-[28px]">
-              <Image
-                src={post.image}
-                alt={post.title}
-                fill
-                sizes="(max-width: 900px) 100vw, 900px"
-                className="object-cover"
-              />
+            {/* Featured image — ONE single <Image>. The wrapper below only reserves
+                HALF the image's height in the page flow (aspect-[32/7] = half of the
+                image's own 16/7 ratio), so the hero section ends right there. The
+                image itself is absolutely positioned to the top of that half-height
+                slot at its FULL height (aspect-[16/7]), so it naturally spills past
+                the reserved slot and overlaps the white body section below by
+                exactly the other half — no margin collapsing, no image splitting. */}
+            <div className="relative mt-10 aspect-[32/7] sm:mt-12">
+              <div className="absolute inset-x-0 top-0 z-20 aspect-[16/7] overflow-hidden rounded-2xl shadow-[0_30px_70px_rgba(0,0,0,0.4)] sm:rounded-[28px]">
+                <Image
+                  src={images.blogHero}
+                  alt={post.title}
+                  fill
+                  sizes="(max-width: 900px) 100vw, 900px"
+                  className="object-cover"
+                />
+              </div>
             </div>
           </div>
         </section>
 
         {/* ── Body ──────────────────────────────────────────────────── */}
-        <section className="bg-white py-14 sm:py-16 lg:py-20">
+        {/* paddingTop uses a fluid clamp() (not Tailwind's stepped pt-*) so the gap
+            scales smoothly with the container's own width and reliably clears the
+            image's overlapping bottom half at every screen size, not just at the
+            three breakpoints. */}
+        <section
+          className="bg-white pb-14 sm:pb-16 lg:pb-20"
+          style={{ paddingTop: "clamp(140px, 26vw, 260px)" }}
+        >
           <div className="mx-auto w-full max-w-[780px] px-5 sm:px-8">
             {hasFullBody ? (
               <>

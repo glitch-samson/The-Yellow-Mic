@@ -53,4 +53,5 @@ export const images = {
   inspiredSectionLine: asset("inspired_section_line.svg"),
   approachImage: asset("Approach Image.png"),
   storyVector: asset("story_vector.svg"),
+  blogHero: asset("blog-hero.jpg"),
 };
