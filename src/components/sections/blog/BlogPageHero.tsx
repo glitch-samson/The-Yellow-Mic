@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { MotionSection } from "../../ui/MotionSection";
-import { StudioBanner } from "./StudioBanner";
 import { blogPageHeader, posts } from "@/lib/content";
 import { images } from "@/lib/assets";
 
@@ -89,25 +88,19 @@ function PostMeta({ post, small = false }: { post: Post; small?: boolean }) {
 }
 
 function FeaturedPostCard({ post, feature = false }: { post: Post; feature?: boolean }) {
-  const useStudioBanner = post.slug === "breaking-down-the-headlines";
-
   return (
     <Link
       href={`/blog/${post.slug}`}
       className="group relative block w-full overflow-hidden rounded-2xl bg-[#111418]"
       style={{ aspectRatio: feature ? "792 / 624" : "384 / 302.4" }}
     >
-      {useStudioBanner ? (
-        <StudioBanner className="absolute inset-0 transition duration-700 group-hover:scale-[1.03]" />
-      ) : (
-        <Image
-          src={post.image}
-          alt={post.title}
-          fill
-          sizes={feature ? "(max-width: 1024px) 100vw, 792px" : "(max-width: 1024px) 50vw, 384px"}
-          className="object-cover transition duration-700 group-hover:scale-[1.03]"
-        />
-      )}
+      <Image
+        src={post.image}
+        alt={post.title}
+        fill
+        sizes={feature ? "(max-width: 1024px) 100vw, 792px" : "(max-width: 1024px) 50vw, 384px"}
+        className="object-cover transition duration-700 group-hover:scale-[1.03]"
+      />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(17,20,24,0)_0%,rgba(17,20,24,0.16)_38%,rgba(17,20,24,0.74)_74%,rgba(0,0,0,0.96)_100%)]" />
       <div className={feature ? "absolute left-[4.04%] top-[74.36%]" : "absolute left-[6.51%] top-[64.8%]"}>
         <PostMeta post={post} small={!feature} />
