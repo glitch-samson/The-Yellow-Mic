@@ -69,16 +69,27 @@ export function BlogArticleView({ slug }: BlogArticleViewProps) {
             </div>
 
             <h1
-              className="mx-auto mt-4 max-w-3xl text-center text-white"
+              className="mx-auto mt-4 w-full text-center text-[40px] leading-[48px] text-white sm:relative sm:left-1/2 sm:w-[calc(100vw-64px)] sm:max-w-none sm:-translate-x-1/2 sm:text-[64px] sm:leading-[76.8px]"
               style={{
                 fontFamily: TITLE_FONT,
                 fontWeight: 700,
-                fontSize: "clamp(28px, 5vw, 48px)",
-                lineHeight: 1.2,
-                letterSpacing: "-0.025em",
+                letterSpacing: "-2.56px",
+                textAlign: "center",
+                verticalAlign: "middle",
               }}
             >
-              {post.title}
+              {post.title.includes(": Best") ? (
+                <>
+                  <span className="block w-full text-center sm:whitespace-nowrap" style={{ textAlign: "center" }}>
+                    {post.title.split(": Best")[0]}: Best
+                  </span>
+                  <span className="block w-full text-center sm:whitespace-nowrap" style={{ textAlign: "center" }}>
+                    {post.title.split(": Best")[1].trim()}
+                  </span>
+                </>
+              ) : (
+                post.title
+              )}
             </h1>
             <p
               className="mx-auto mt-4 max-w-xl text-center text-white/60"
@@ -94,13 +105,13 @@ export function BlogArticleView({ slug }: BlogArticleViewProps) {
                 slot at its FULL height (aspect-[16/7]), so it naturally spills past
                 the reserved slot and overlaps the white body section below by
                 exactly the other half — no margin collapsing, no image splitting. */}
-            <div className="relative mt-10 aspect-[32/7] sm:mt-12">
-              <div className="absolute inset-x-0 top-0 z-20 aspect-[16/7] overflow-hidden rounded-2xl shadow-[0_30px_70px_rgba(0,0,0,0.4)] sm:rounded-[28px]">
+            <div className="relative left-1/2 mt-10 aspect-[1200/257] w-[calc(100vw-40px)] max-w-[1200px] -translate-x-1/2 sm:mt-12">
+              <div className="absolute inset-x-0 top-0 z-20 aspect-[1200/514] overflow-hidden rounded-[16px]">
                 <Image
                   src={images.blogHero}
                   alt={post.title}
                   fill
-                  sizes="(max-width: 900px) 100vw, 900px"
+                  sizes="(max-width: 1200px) 100vw, 1200px"
                   className="object-cover"
                 />
               </div>
@@ -109,13 +120,10 @@ export function BlogArticleView({ slug }: BlogArticleViewProps) {
         </section>
 
         {/* ── Body ──────────────────────────────────────────────────── */}
-        {/* paddingTop uses a fluid clamp() (not Tailwind's stepped pt-*) so the gap
-            scales smoothly with the container's own width and reliably clears the
-            image's overlapping bottom half at every screen size, not just at the
-            three breakpoints. */}
+        {/* Keep the article content below the enlarged image overlap at every width. */}
         <section
           className="bg-white pb-14 sm:pb-16 lg:pb-20"
-          style={{ paddingTop: "clamp(140px, 26vw, 260px)" }}
+          style={{ paddingTop: "clamp(180px, 25vw, 320px)" }}
         >
           <div className="mx-auto w-full max-w-[780px] px-5 sm:px-8">
             {hasFullBody ? (
